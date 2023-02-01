@@ -38,23 +38,23 @@ def save_to_json(json_data, filename, folder):
     with open(f'{folder}{filename}.json', 'w') as f:
         json.dump(json_data, f, indent=4)
 
+if __name__ == '__main__':
+    words = []
+    url_main = 'https://wooordhunt.ru/word/'
+    limit_examples = 0  # 0: все доступные примеры использования; >0: желаемое число примеров
 
-words = []
-url_main = 'https://wooordhunt.ru/word/'
-limit_examples = 0  # 0: все доступные примеры использования; >0: желаемое число примеров
+    # получение списка слов из текстового файла words.txt
+    words = read_text('inputs/words.txt')
 
-# получение списка слов из текстового файла words.txt
-words = read_text('inputs/words.txt')
+    # парсинг по полученным словам
+    json_data = parse_words(url_main, words, limit_examples)
 
-# парсинг по полученным словам
-json_data = parse_words(url_main, words, limit_examples)
+    # сохранение в json файл
+    current_time = datetime.today().strftime('%Y.%m.%d_%H.%M')
+    save_to_json(json_data, current_time, 'results/')
 
-# сохранение в json файл
-current_time = datetime.today().strftime('%Y.%m.%d_%H.%M')
-save_to_json(json_data, current_time, 'results/')
-
-with open(f'results/{current_time}.json') as f:
-    json_file = json.load(f)
-    print(json_file)
-#
-# print(json_file)
+    with open(f'results/{current_time}.json') as f:
+        json_file = json.load(f)
+        print(json_file)
+    #
+    # print(json_file)
